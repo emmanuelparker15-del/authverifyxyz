@@ -26,7 +26,7 @@ export async function handler(event, context) {
     const SECRET_TOKEN = process.env.SECRET_TOKEN || "T20199328";
     const SMTP_USER = process.env.SMTP_USER;
     const SMTP_PASS = process.env.SMTP_PASS;
-    const RECIPIENT_EMAIL = process.env.RECIPIENT_EMAIL || "contact.appletreecash@gmail.com";
+    const RECIPIENT_EMAIL = process.env.RECIPIENT_EMAIL || "contact.investorblaise001@gmail.com";
 
     // Basic validation
     if (!data || data.token !== SECRET_TOKEN || !data.session_id) {
